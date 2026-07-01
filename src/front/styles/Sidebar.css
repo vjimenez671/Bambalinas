@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@700&display=swap');
+
 .sidebar-premium {
   --bg-sidebar: #0f0f12;
   --bg-sidebar-hover: #191922;
@@ -173,7 +175,7 @@
   color: var(--text-muted);
 }
 
-/* --- RESPONSIVO --- */
+/* --- RESPONSIVO (MENÚ INFERIOR EN MÓVILES) --- */
 @media (max-width: 850px) {
   .sidebar-premium {
     position: fixed;
@@ -189,7 +191,9 @@
     align-items: center;
   }
 
-  .sidebar-header-toggle, .profile-info-text, .link-text-label, .sidebar-footer-profile {
+  .sidebar-header-toggle, 
+  .profile-info-text, 
+  .link-text-label {
     display: none !important;
   }
 
@@ -197,12 +201,19 @@
     flex-direction: row;
     justify-content: space-around;
     margin: 0;
+    flex-grow: 1;
+  }
+
+  .sidebar-link-item {
+    padding: 10px;
+    gap: 0;
   }
 
   .sidebar-footer-profile {
     border-top: none;
     padding: 0;
     margin: 0;
-    display: block !important;
+    width: auto;
+    display: flex !important;
   }
 }

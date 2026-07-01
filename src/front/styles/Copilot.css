@@ -30,6 +30,36 @@
   transition: padding 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
+/* --- ESTILOS MODERNOS PARA LA BARRA DE DESPLAZAMIENTO (SCROLLBARS) --- */
+.chat-messages-box,
+.preview-panel {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-card) var(--bg-deep);
+}
+
+.chat-messages-box::-webkit-scrollbar,
+.preview-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages-box::-webkit-scrollbar-track,
+.preview-panel::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+  border-radius: 10px;
+}
+
+.chat-messages-box::-webkit-scrollbar-thumb,
+.preview-panel::-webkit-scrollbar-thumb {
+  background: var(--border-card);
+  border-radius: 10px;
+  transition: background 0.2s ease;
+}
+
+.chat-messages-box::-webkit-scrollbar-thumb:hover,
+.preview-panel::-webkit-scrollbar-thumb:hover {
+  background: var(--text-dark-gray);
+}
+
 .copilot-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -107,7 +137,8 @@
 .brain-icon-active {
   font-size: 1.8rem;
   color: var(--c-neon-cyan);
-  animation: pulseBrain 2s infinite alternate;
+  /* Animación optimizada a 2.5s con aceleración bezier elástica y fluida */
+  animation: pulseBrain 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
 }
 
 .ai-status h3 {
@@ -217,6 +248,7 @@
   gap: 25px;
   height: 680px;
   overflow-y: auto;
+  padding-right: 5px;
 }
 
 .preview-section-box {
@@ -344,8 +376,14 @@
 }
 
 @keyframes pulseBrain {
-  from { opacity: 0.6; transform: scale(1); }
-  to { opacity: 1; transform: scale(1.08); filter: drop-shadow(0 0 8px var(--c-neon-cyan)); }
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0px rgba(0, 240, 255, 0));
+  }
+  100% {
+    transform: scale(1.06);
+    filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.6));
+  }
 }
 
 /* --- RESPONSIVO --- */

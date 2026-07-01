@@ -10,6 +10,7 @@ const Single = lazy(() => import("./pages/Single").then(module => ({ default: mo
 const Demo = lazy(() => import("./pages/Demo").then(module => ({ default: module.Demo })));
 const Dashboard = lazy(() => import("./pages/Dashboard.jsx"));
 const Copilot = lazy(() => import("./pages/Copilot.jsx"));
+const Audiencias = lazy(() => import("./pages/Audiencias.jsx")); // <- Nueva página importada con Lazy Load
 
 // Layout Privado simplificado al máximo: Solo inyecta el Contexto y Suspense 
 // para evitar comportamientos extraños con las estructuras CSS propias de tus páginas.
@@ -49,6 +50,7 @@ export const router = createBrowserRouter(
       <Route element={<AppLayout />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/copiloto" element={<Copilot />} />
+        <Route path="/audiencias" element={<Audiencias />} /> {/* <- Nueva ruta agregada */}
       </Route>
     </>
   )

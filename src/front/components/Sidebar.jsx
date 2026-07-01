@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import "../styles/Sidebar.css"; // Asegúrate de que apunte a tu ruta real de estilos del Sidebar
+import "../styles/Sidebar.css";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -42,6 +42,15 @@ const Sidebar = () => {
         >
           <i className="fa-solid fa-robot"></i>
           {isOpen && <span className="link-text-label">Copiloto IA</span>}
+        </NavLink>
+
+        {/* NUEVO ACCESO A LA RUTA DE AUDIENCIAS */}
+        <NavLink 
+          to="/audiencias" 
+          className={({ isActive }) => `sidebar-link-item ${isActive ? "active" : ""}`}
+        >
+          <i className="fa-solid fa-users-viewfinder"></i>
+          {isOpen && <span className="link-text-label">Audiencias</span>}
         </NavLink>
       </nav>
 

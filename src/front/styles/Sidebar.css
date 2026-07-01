@@ -1,0 +1,208 @@
+.sidebar-premium {
+  --bg-sidebar: #0f0f12;
+  --bg-sidebar-hover: #191922;
+  --border-sidebar: #1f1f26;
+  --c-purple-electric: #7b2cbf;
+  --c-neon-cyan: #00f0ff;
+  --text-pure: #ffffff;
+  --text-muted: #8e8e93;
+  
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-sidebar);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  z-index: 100;
+  transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow-x: hidden;
+}
+
+/* Manejo de anchos dinámicos según el estado en React */
+.sidebar-premium.open {
+  width: 260px;
+}
+
+.sidebar-premium.collapsed {
+  width: 80px;
+  align-items: center;
+  padding: 24px 8px;
+}
+
+/* --- HEADER --- */
+.sidebar-header-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 40px;
+  padding: 0 8px;
+  min-height: 35px;
+}
+
+.sidebar-brand-logo {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-pure);
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.ai-badge-brand {
+  font-size: 0.7rem;
+  background: linear-gradient(90deg, var(--c-neon-cyan), var(--c-purple-electric));
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #000;
+  font-weight: 800;
+  margin-left: 4px;
+}
+
+.sidebar-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.sidebar-toggle-btn:hover {
+  background-color: var(--bg-sidebar-hover);
+  color: var(--text-pure);
+}
+
+/* --- MENÚ DE NAVEGACIÓN --- */
+.sidebar-nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.sidebar-link-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 14px;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.sidebar-link-item i {
+  font-size: 1.2rem;
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.sidebar-link-item:hover {
+  background-color: var(--bg-sidebar-hover);
+  color: var(--text-pure);
+}
+
+/* Estado Activo de React Router NavLink */
+.sidebar-link-item.active {
+  background: rgba(123, 44, 191, 0.15);
+  color: #b388ff;
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--c-purple-electric);
+}
+
+.sidebar-link-item.active i {
+  color: #b388ff;
+}
+
+/* --- PERFIL / FOOTER --- */
+.sidebar-footer-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 8px;
+  border-top: 1px solid var(--border-sidebar);
+  width: 100%;
+  margin-top: auto;
+  overflow: hidden;
+}
+
+.profile-avatar-mini {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--c-purple-electric), #9d4edd);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.profile-info-text {
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+}
+
+.profile-name-user {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-pure);
+}
+
+.profile-role-user {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* --- RESPONSIVO --- */
+@media (max-width: 850px) {
+  .sidebar-premium {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100% !important;
+    height: 70px;
+    flex-direction: row;
+    padding: 10px 20px;
+    border-right: none;
+    border-top: 1px solid var(--border-sidebar);
+    align-items: center;
+  }
+
+  .sidebar-header-toggle, .profile-info-text, .link-text-label, .sidebar-footer-profile {
+    display: none !important;
+  }
+
+  .sidebar-nav-menu {
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 0;
+  }
+
+  .sidebar-footer-profile {
+    border-top: none;
+    padding: 0;
+    margin: 0;
+    display: block !important;
+  }
+}

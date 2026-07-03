@@ -1,0 +1,224 @@
+/* --- MAESTRO DE LAYOUT GLOBAL (3 COLUMNAS) --- */
+.app-workspace-master-layout {
+  display: flex;
+  background-color: #0a0a0c;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* CONTENEDOR CENTRAL: Calcula su espacio restando el Sidebar (izq) y Copiloto (der) */
+.app-main-view-container {
+  flex-grow: 1;
+  transition: padding 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-sizing: border-box;
+  
+  /* Paddings adaptativos usando variables globales de CSS */
+  padding-left: calc(var(--sidebar-width, 260px) + 20px);
+  padding-right: calc(var(--copiloto-width, 340px) + 20px);
+  padding-top: 40px;
+  padding-bottom: 60px;
+}
+
+/* --- BARRA LATERAL DEL COPILOTO --- */
+.copiloto-persistent-sidebar {
+  --bg-panel: #0f0f12;
+  --border-color: #1f1f26;
+  --c-purple: #7b2cbf;
+  --c-cyan: #00f0ff;
+  
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  background: var(--bg-panel);
+  border-left: 1px solid var(--border-color);
+  z-index: 90;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.copiloto-persistent-sidebar.expanded {
+  width: 340px;
+  --copiloto-width: 340px;
+}
+
+.copiloto-persistent-sidebar.collapsed {
+  width: 0px;
+  --copiloto-width: 0px;
+}
+
+/* Inyectar la variable de ancho dinámico en el scope global del HTML */
+.copiloto-persistent-sidebar.expanded ~ .app-main-view-container { --copiloto-width: 340px; }
+.copiloto-persistent-sidebar.collapsed ~ .app-main-view-container { --copiloto-width: 0px; }
+
+/* BOTÓN FLOTANTE TRIGGER */
+.toggle-copiloto-btn {
+  position: absolute;
+  left: -45px;
+  top: 25px;
+  width: 45px;
+  height: 45px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-right: none;
+  border-radius: 12px 0 0 12px;
+  color: #8e8e93;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.toggle-copiloto-btn:hover { color: var(--c-cyan); }
+
+.brain-pulse-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 6px;
+  height: 6px;
+  background: var(--c-cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--c-cyan);
+}
+
+/* CONTENIDO INTERNO DEL PANEL */
+.copiloto-panel-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  width: 340px; /* Ancho fijo interno para evitar deformaciones en la animación */
+}
+
+.copiloto-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 15px;
+}
+
+.ai-logo { font-size: 1.5rem; color: var(--c-cyan); }
+.copiloto-panel-header h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 1.1rem; color: white; letter-spacing: 0.5px;}
+.ai-status-sub { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
+
+/* PESTAÑAS DE CAMBIO DE CHAT */
+.copiloto-tabs-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 15px 0;
+  background: #0a0a0c;
+  padding: 4px;
+  border-radius: 10px;
+}
+
+.chat-tab-trigger {
+  background: transparent;
+  border: none;
+  color: #8e8e93;
+  padding: 8px 4px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: all 0.2s;
+}
+
+.chat-tab-trigger:hover { color: white; }
+.chat-tab-trigger.active {
+  background: var(--bg-panel);
+  color: var(--c-cyan);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* ÁREA DE MENSAJES CON SCROLLBAR OSCURO */
+.copiloto-messages-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-right: 4px;
+  margin-bottom: 15px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) #0a0a0c;
+}
+
+.copiloto-messages-container::-webkit-scrollbar { width: 4px; }
+.copiloto-messages-container::-webkit-scrollbar-track { background: #0a0a0c; }
+.copiloto-messages-container::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+
+.copiloto-msg-wrapper { display: flex; width: 100%; }
+.copiloto-msg-wrapper.ia { justify-content: flex-start; }
+.copiloto-msg-wrapper.user { justify-content: flex-end; }
+
+.copiloto-bubble {
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  max-width: 85%;
+}
+
+.ia .copiloto-bubble {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border-color);
+  color: #e5e5ea;
+  border-top-left-radius: 4px;
+}
+
+.user .copiloto-bubble {
+  background: var(--c-purple);
+  color: white;
+  border-top-right-radius: 4px;
+}
+
+/* FORMULARIO INPUT */
+.copiloto-form-input {
+  display: flex;
+  background: #0a0a0c;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 4px 8px;
+  align-items: center;
+}
+
+.copiloto-form-input input {
+  flex-grow: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 10px;
+  font-size: 0.85rem;
+}
+
+.copiloto-form-input button {
+  background: var(--c-purple);
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.copiloto-form-input button:hover { background: #9d4edd; }
+
+/* --- RESPONSIVO --- */
+@media (max-width: 1050px) {
+  .copiloto-persistent-sidebar { display: none !important; }
+  .app-main-view-container { padding-right: 20px !important; padding-left: 20px !important; }
+}

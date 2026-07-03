@@ -24,16 +24,8 @@
   overflow-x: hidden;
 }
 
-/* Manejo de anchos dinámicos según el estado en React */
-.sidebar-premium.open {
-  width: 260px;
-}
-
-.sidebar-premium.collapsed {
-  width: 80px;
-  align-items: center;
-  padding: 24px 8px;
-}
+.sidebar-premium.open { width: 260px; }
+.sidebar-premium.collapsed { width: 80px; align-items: center; padding: 24px 8px; }
 
 /* --- HEADER --- */
 .sidebar-header-toggle {
@@ -85,7 +77,7 @@
   color: var(--text-pure);
 }
 
-/* --- MENÚ DE NAVEGACIÓN --- */
+/* --- NAV --- */
 .sidebar-nav-menu {
   display: flex;
   flex-direction: column;
@@ -120,7 +112,6 @@
   color: var(--text-pure);
 }
 
-/* Estado Activo de React Router NavLink */
 .sidebar-link-item.active {
   background: rgba(123, 44, 191, 0.15);
   color: #b388ff;
@@ -128,11 +119,9 @@
   box-shadow: inset 3px 0 0 var(--c-purple-electric);
 }
 
-.sidebar-link-item.active i {
-  color: #b388ff;
-}
+.sidebar-link-item.active i { color: #b388ff; }
 
-/* --- PERFIL / FOOTER --- */
+/* --- FOOTER --- */
 .sidebar-footer-profile {
   display: flex;
   align-items: center;
@@ -158,25 +147,12 @@
   flex-shrink: 0;
 }
 
-.profile-info-text {
-  display: flex;
-  flex-direction: column;
-  white-space: nowrap;
-}
+.profile-info-text { display: flex; flex-direction: column; white-space: nowrap; }
+.profile-name-user { font-size: 0.88rem; font-weight: 600; color: var(--text-pure); }
+.profile-role-user { font-size: 0.75rem; color: var(--text-muted); }
 
-.profile-name-user {
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--text-pure);
-}
-
-.profile-role-user {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-}
-
-/* --- RESPONSIVO (MENÚ INFERIOR EN MÓVILES) --- */
-@media (max-width: 850px) {
+/* --- RESPONSIVO --- */
+@media (max-width: 1050px) {
   .sidebar-premium {
     position: fixed;
     top: auto;
@@ -191,29 +167,101 @@
     align-items: center;
   }
 
-  .sidebar-header-toggle, 
-  .profile-info-text, 
-  .link-text-label {
-    display: none !important;
-  }
+  .sidebar-header-toggle, .profile-info-text, .link-text-label { display: none !important; }
+  .sidebar-nav-menu { flex-direction: row; justify-content: space-around; margin: 0; flex-grow: 1; }
+  .sidebar-link-item { padding: 10px; gap: 0; }
+  .sidebar-footer-profile { border-top: none; padding: 0; margin: 0; width: auto; display: flex !important; }
+}
 
-  .sidebar-nav-menu {
-    flex-direction: row;
-    justify-content: space-around;
-    margin: 0;
-    flex-grow: 1;
-  }
+/* --- LOGICA Y ADAPTACION DEL SUBMENÚ DEL COPILOTO (AGREGADO LIMPIO) --- */
+.sidebar-submenu-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
-  .sidebar-link-item {
-    padding: 10px;
-    gap: 0;
-  }
+/* Reset estructural para que el botón de Copiloto IA se comporte exactamente igual que los NavLink */
+.sidebar-submenu-wrapper button.sidebar-link-item {
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
 
-  .sidebar-footer-profile {
-    border-top: none;
-    padding: 0;
-    margin: 0;
-    width: auto;
-    display: flex !important;
-  }
+/* Contenedor interno para empujar la flecha indicadora */
+.flex-space-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.arrow-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.arrow-sub.rotated {
+  transform: rotate(180deg);
+  color: #b388ff;
+}
+
+/* Estado visual del botón del Copiloto cuando sus subcategorías están desplegadas */
+.submenu-active-parent {
+  background-color: var(--bg-sidebar-hover);
+  color: var(--text-pure);
+}
+
+/* Listado contenedor de sub-chats */
+.sidebar-sub-links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 28px; /* Sangría alineada perfectamente al texto del padre */
+  margin-top: 4px;
+}
+
+/* Estilo para los chats individuales (Wsp, Audiencias, Campañas) */
+.sub-link-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.sub-link-item i {
+  font-size: 1rem;
+  width: 20px;
+  text-align: center;
+}
+
+.sub-link-item:hover {
+  background-color: var(--bg-sidebar-hover);
+  color: var(--text-pure);
+}
+
+/* Estado activo para el chat en el que te encuentras parado */
+.sub-link-item.active {
+  color: #b388ff;
+  background: rgba(123, 44, 191, 0.08);
+  font-weight: 600;
+}
+
+/* Entrada fluida para las subcategorías */
+.fade-in-sub {
+  animation: fadeInSub 0.15s ease-out;
+}
+
+@keyframes fadeInSub {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
 }

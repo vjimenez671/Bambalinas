@@ -1,114 +1,154 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import { useBambalinas } from "../context/BambalinasContext";
 import "../styles/Dashboard.css";
 
 export default function Dashboard() {
-  const navigate = useNavigate();
-  const { currentShow, metrics, alerts } = useBambalinas();
+    const { currentSeason } = useBambalinas();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    if (!currentSeason) {
+        return <div className="loading-screen">Sincronizando clúster de analíticas...</div>;
+    }
 
-  return (
-    <main className="dashboard-unique-context">
-      <div className="dashboard-container">
-        
-        {/* ENCABEZADO */}
-        <header className="dashboard-premium-header">
-          <div className="header-title-area">
-            <span className="dashboard-tag-premium">{currentShow.season}</span>
-            <h1 className="dashboard-display-h1">Panel de Control <br /><span>{currentShow.title}.</span></h1>
-          </div>
-        </header>
-
-        {/* MÉTRICAS PRINCIPALES */}
-        <section className="dashboard-metrics-grid">
-          <div className="dashboard-card-premium metric-box">
-            <div className="metric-header">
-              <span className="metric-title">Audiencia Total</span>
-              <i className="fa-solid fa-users icon-purple"></i>
-            </div>
-            <div className="metric-number">{metrics.totalAudience}</div>
-            <p className="metric-subtext">Espectadores únicos registrados en BD</p>
-          </div>
-
-          <div className="dashboard-card-premium metric-box">
-            <div className="metric-header">
-              <span className="metric-title">Butacas Salvadas</span>
-              <i className="fa-solid fa-chair icon-cyan"></i>
-            </div>
-            <div className="metric-number">{metrics.seatsSaved}</div>
-            <p className="metric-subtext">Vórtice de conversión por campañas IA</p>
-          </div>
-
-          <div className="dashboard-card-premium metric-box">
-            <div className="metric-header">
-              <span className="metric-title">Créditos WhatsApp</span>
-              <i className="fa-brands fa-whatsapp icon-green"></i>
-            </div>
-            <div className="metric-number">{metrics.creditsLeft} <span>/ {metrics.creditsTotal}</span></div>
-            <p className="metric-subtext">Disponibles para notificaciones push</p>
-          </div>
-        </section>
-
-        {/* SECCIÓN CENTRAL */}
-        <div className="dashboard-details-layout">
-          
-          {/* GRÁFICO DE BARRAS */}
-          <section className="dashboard-card-premium main-chart-area">
-            <h2 className="section-title-premium">Segmentación de Compra</h2>
-            <p className="section-subtitle-premium">Ocupación general: {currentShow.occupancy}%</p>
+    return (
+        <div className="dashboard-unique-context grid-center-content fade-in">
             
-            <div className="bar-chart-mock">
-              <div className="bar-wrapper">
-                <span className="bar-percentage">{currentShow.breakdown.planificados}%</span>
-                <div className="bar-fill planificados" style={{ height: `${currentShow.breakdown.planificados}%` }}></div>
-                <span className="bar-label">Planificados</span>
-              </div>
-              <div className="bar-wrapper">
-                <span className="bar-percentage">{currentShow.breakdown.dudosos}%</span>
-                <div className="bar-fill dudosos" style={{ height: `${currentShow.breakdown.dudosos}%` }}></div>
-                <span className="bar-label">Dudosos</span>
-              </div>
-              <div className="bar-wrapper">
-                <span className="bar-percentage">{currentShow.breakdown.impulsivos}%</span>
-                <div className="bar-fill impulsivos" style={{ height: `${currentShow.breakdown.impulsivos}%` }}></div>
-                <span className="bar-label">Impulsivos</span>
-              </div>
-            </div>
-          </section>
-
-          {/* CRÍTICAS Y ALERTAS DEL COPILOTO */}
-          <section className="dashboard-card-premium copilot-alerts-area">
-            <h2 className="section-title-premium">Copiloto Alertas</h2>
-            
-            <div className="alerts-stack">
-              {alerts.map((alert) => (
-                <div key={alert.id} className={`alert-item-box ${alert.type}`}>
-                  <div className="alert-indicator"></div>
-                  <div className="alert-content">
-                    <p>{alert.text}</p>
-                    <span className="alert-timestamp">{alert.time}</span>
-                  </div>
+            {/* 1. HEADER ESTRATÉGICO */}
+            <header className="dashboard-premium-header">
+                <div className="header-flex-wrapper">
+                    <div>
+                        <span className="dashboard-tag-play"><i className="fa-solid fa-tower-broadcast"></i> Modo Operación Activa</span>
+                        <h1 className="dashboard-display-h1">{currentSeason.currentPlay} <span>— Executive Desk</span></h1>
+                        <p className="dashboard-subtitle">
+                            Análisis predictivo de taquilla y flujos de conversión para la <strong>{currentSeason.season}</strong>.
+                        </p>
+                    </div>
+                    <div className="system-status-indicator">
+                        <span className="pulse-dot"></span> Core Engine Online
+                    </div>
                 </div>
-              ))}
+            </header>
+
+            {/* 2. KPI METRICS CARDS */}
+            <div className="dashboard-metrics-grid">
+                <div className="metric-card-premium">
+                    <div className="metric-header-icon">
+                        <i className="fa-solid fa-users-line icon-cyan"></i>
+                        <span>Ocupación de Sala</span>
+                    </div>
+                    <h2>{currentSeason.metrics.occupancyRate}</h2>
+                    <span className="trend-badge positive"><i className="fa-solid fa-arrow-trend-up"></i> +4.2% vs semana anterior</span>
+                </div>
+
+                <div className="metric-card-premium">
+                    <div className="metric-header-icon">
+                        <i className="fa-solid fa-ticket icon-purple"></i>
+                        <span>Butacas Emitidas</span>
+                    </div>
+                    <h2>{currentSeason.metrics.ticketsSold} <span className="max-seats">/ {currentSeason.metrics.totalSeats}</span></h2>
+                    <span className="trend-badge neutral">Capacidad Óptima</span>
+                </div>
+
+                <div className="metric-card-premium">
+                    <div className="metric-header-icon">
+                        <i className="fa-solid fa-file-invoice-dollar icon-green"></i>
+                        <span>Recaudación Bruta</span>
+                    </div>
+                    <h2>{currentSeason.metrics.revenuePlay}</h2>
+                    <span className="trend-badge positive"><i className="fa-solid fa-arrow-trend-up"></i> 91% del target total</span>
+                </div>
+
+                <div className="metric-card-premium">
+                    <div className="metric-header-icon">
+                        <i className="fa-solid fa-bolt icon-orange"></i>
+                        <span>Automatizaciones</span>
+                    </div>
+                    <h2>{currentSeason.metrics.activeAutomations} <span className="max-seats">RAG</span></h2>
+                    <span className="trend-badge ai-glow">IA Asistiendo</span>
+                </div>
             </div>
 
-            <button className="dashboard-action-btn-primary" onClick={() => navigate("/copiloto")}>
-              <i className="fa-solid fa-brain"></i>
-              <span>Abrir Bambalinas Copiloto</span>
-            </button>
-          </section>
+            {/* 3. DISTRIBUCIÓN DE CONTENIDOS PRO (DOS COLUMNAS ASIMÉTRICAS) */}
+            <div className="dashboard-split-layout">
+                
+                {/* COLUMNA IZQUIERDA: CONTROL DE SALA Y TAQUILLA */}
+                <div className="dashboard-main-panel">
+                    
+                    {/* Bloque: Desglose Físico de la Sala */}
+                    <section className="dashboard-card-premium section-spacing">
+                        <h4 className="panel-section-title"><i className="fa-solid fa-couch"></i> Rendimiento por Sector de Sala</h4>
+                        <div className="zoning-list-wrapper">
+                            {currentSeason.roomZoning.map(zone => {
+                                const percentage = ((zone.sold / zone.capacity) * 100).toFixed(0);
+                                return (
+                                    <div key={zone.id} className="zone-row-item">
+                                        <div className="zone-info-top">
+                                            <span className="zone-name"><strong>{zone.name}</strong> <small>({zone.price})</small></span>
+                                            <span className={`zone-status-pill ${zone.id}`}>{zone.status}</span>
+                                        </div>
+                                        <div className="zone-progress-container">
+                                            <div className="zone-progress-bar">
+                                                <div className={`zone-progress-fill fill-${zone.id}`} style={{ width: `${percentage}%` }}></div>
+                                            </div>
+                                            <span className="zone-percentage-text">{zone.sold}/{zone.capacity} ({percentage}%)</span>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </section>
+
+                    {/* Bloque: Historial de Funciones pasadas */}
+                    <section className="dashboard-card-premium">
+                        <h4 className="panel-section-title"><i className="fa-solid fa-chart-bar"></i> Auditoría Corta de Funciones</h4>
+                        <table className="dashboard-internal-table">
+                            <thead>
+                                <tr><th>Función</th><th>Ocupación</th><th>Boletería</th><th>Conversión Campaña</th></tr>
+                            </thead>
+                            <tbody>
+                                {currentSeason.recentPerformances.map((perf, index) => (
+                                    <tr key={index}>
+                                        <td><strong>{perf.date}</strong></td>
+                                        <td>{perf.occupancy}</td>
+                                        <td className="bold-td-white">{perf.revenue}</td>
+                                        <td><span className="conversion-rate-tag">{perf.conversion} click rate</span></td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </section>
+
+                </div>
+
+                {/* COLUMNA DERECHA: SEGUIMIENTO EN TIEMPO REAL DEL COPILOTO */}
+                <div className="dashboard-side-panel">
+                    <section className="dashboard-card-premium full-height-card">
+                        <h4 className="panel-section-title"><i className="fa-solid fa-brain"></i> Actividad del Copiloto IA</h4>
+                        <p className="panel-section-subtitle">Logs en tiempo real de reglas disparadas e indexaciones.</p>
+                        
+                        <div className="ai-logs-stream">
+                            {currentSeason.aiSystemLogs.map(log => (
+                                <div key={log.id} className={`log-event-card ${log.type}`}>
+                                    <div className="log-event-header">
+                                        <span className={`log-indicator-dot ${log.type}`}></span>
+                                        <span className="log-time-stamp">{log.time}</span>
+                                    </div>
+                                    <p className="log-body-text">{log.text}</p>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="ai-automation-efficiency-widget">
+                            <span className="efficiency-title">Carga de Trabajo Automatizada</span>
+                            <div className="efficiency-flex">
+                                <h3>74.2%</h3>
+                                <p>De las comunicaciones masivas de esta temporada se resolvieron de forma autónoma sin intervención humana.</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+            </div>
 
         </div>
-
-        <footer className="dashboard-premium-footer">
-          <p>Bambalinas Core System v1.0.0 • Gestión Avanzada de Audiencias Teatrales</p>
-        </footer>
-
-      </div>
-    </main>
-  );
+    );
 }

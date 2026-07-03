@@ -1,0 +1,66 @@
+.cam-chat-card-premium {
+  background: #141117; /* Tinte morado neón corporativo */
+  border: 1.5px solid #241f2b;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 160px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  width: 100%;
+}
+
+.cam-chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px;
+  border-bottom: 1px solid #241f2b;
+  background: #1b1622;
+}
+
+.cam-tag-premium {
+  background: linear-gradient(90deg, #9d4edd, #7b2cbf);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.cam-chat-header h1 { font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 1.8rem; color: white; }
+.cam-chat-header h1 span { color: #b388ff; }
+.cam-chat-header p { color: #a7a2b0; font-size: 0.9rem; margin-top: 4px; }
+.cam-icon-badge { width: 50px; height: 50px; background: rgba(123, 44, 191, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #b388ff; font-size: 1.4rem; }
+
+.cam-chat-body {
+  flex-grow: 1;
+  padding: 30px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: #0f0d12;
+}
+
+.cam-msg-row { display: flex; gap: 15px; width: 100%; max-width: 80%; }
+.cam-msg-row.ia { align-self: flex-start; }
+.cam-msg-row.user { align-self: flex-end; flex-direction: row-reverse; }
+
+.cam-avatar-circle { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; }
+.ia .cam-avatar-circle { background: rgba(123, 44, 191, 0.15); border: 1px solid #241f2b; }
+.user .cam-avatar-circle { background: #7b2cbf; color: white; }
+
+.cam-msg-bubble { padding: 16px 20px; border-radius: 18px; font-size: 0.92rem; line-height: 1.5; color: #e5e5ea; }
+.ia .cam-msg-bubble { background: #16131a; border: 1px solid #241f2b; border-top-left-radius: 4px; }
+.user .cam-msg-bubble { background: #5a189a; color: white; border-top-right-radius: 4px; }
+
+.cam-chat-footer-form { display: flex; padding: 20px 30px; background: #1b1622; border-top: 1px solid #241f2b; gap: 15px; }
+.cam-chat-footer-form input { flex-grow: 1; background: #0f0d12; border: 1px solid #241f2b; padding: 16px; border-radius: 12px; color: white; outline: none; font-size: 0.95rem; }
+.cam-chat-footer-form input:focus { border-color: #b388ff; }
+.cam-chat-footer-form button { background: white; color: #0a0a0c; border: none; padding: 0 25px; border-radius: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.2s; }
+.cam-chat-footer-form button:hover { background: #b388ff; transform: translateY(-1px); }

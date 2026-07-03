@@ -3,64 +3,68 @@ import React, { createContext, useState, useContext } from "react";
 const BambalinasContext = createContext();
 
 export function BambalinasProvider({ children }) {
-  // Estado de la obra seleccionada actualmente
-  const [currentShow, setCurrentShow] = useState({
-    title: "Shrek, El Musical",
-    season: "Temporada Invierno 2026",
-    occupancy: 68,
-    breakdown: { planificados: 45, dudosos: 35, impulsivos: 20 }
-  });
+    // 1. Estados de los Chats del Copiloto
+    const [chats, setChats] = useState({
+        whatsapp: [
+            { id: 1, sender: "ia", text: "Hola Vicente. Estoy listo para ayudarte a redactar y despachar alertas masivas por WhatsApp. Actualmente la tasa de apertura promedio en tus obras es del 95.3%." },
+            { id: 2, sender: "user", text: "Necesito enviar una alerta de última hora para la función de Shrek de este sábado, nos quedan 40 butacas." },
+            { id: 3, sender: "ia", text: "Perfecto. He redactado una alerta dirigida al segmento 'Espectadores Impulsivos + Inactivos'. ¿Quieres que la despache ahora mismo a sus WhatsApps?" }
+        ],
+        audiences: [
+            { id: 1, sender: "ia", text: "Canal de Audiencias activado. Puedo estructurar segmentos cruzando datos de PostgreSQL." },
+            { id: 2, sender: "user", text: "Filtra a todos los usuarios que hayan venido más de 2 veces a ver 'La Guitarra'." },
+            { id: 3, sender: "ia", text: "Query completada. Encontré 342 espectadores que cumplen el criterio. Los he guardado bajo el nuevo segmento estratégico: **'Súper Fans - La Guitarra'**." }
+        ],
+        campanas: [
+            { id: 1, sender: "ia", text: "Centro de control de campañas de marketing automatizado listo." },
+            { id: 2, sender: "user", text: "Oye, agendemos el estreno de 'El Acordeón Secreto' para el 15 de octubre. Deja lista una alerta de descuento automática para los súper fans de la guitarra." },
+            { id: 3, sender: "ia", text: "¡Entendido! He registrado la nueva obra en el sistema y creé la regla lógica: *Si compra 'La Guitarra' → Esperar 1 mes antes del estreno → Enviar 20% descuento para 'El Acordeón Secreto' via WhatsApp*." }
+        ]
+    });
 
-  // Métricas generales del Dashboard
-  const [metrics, setMetrics] = useState({
-    totalAudience: 1420,
-    seatsSaved: 342,
-    creditsLeft: 145,
-    creditsTotal: 350
-  });
+    // 2. Estado de la Temporada Actual para el Dashboard
+    const [currentSeason] = useState({
+        season: "Temporada de Invierno 2026",
+        currentPlay: "Shrek: El Musical",
+        theaterRoom: "Sala Principal (Bambalinas Central)",
+        metrics: {
+            occupancyRate: "88.4%",
+            ticketsSold: 1240,
+            totalSeats: 1400,
+            revenuePlay: "$14,880,000",
+            activeAutomations: 8
+        },
+        roomZoning: [
+            { id: "pb", name: "Platea Baja Preferencial", sold: 480, capacity: 500, price: "$25,000", status: "Crítico (96%)" },
+            { id: "pa", name: "Platea Alta General", sold: 610, capacity: 700, price: "$15,000", status: "Estable (87%)" },
+            { id: "pk", name: "Palcos VIP Izq/Der", sold: 150, capacity: 200, price: "$40,000", status: "Acción Requerida (75%)" }
+        ],
+        recentPerformances: [
+            { date: "Viernes 26/06", occupancy: "94%", revenue: "$3,120,000", conversion: "34%" },
+            { date: "Sábado 27/06", occupancy: "98%", revenue: "$3,450,000", conversion: "41%" },
+            { date: "Domingo 28/06", occupancy: "82%", revenue: "$2,890,000", conversion: "22%" }
+        ],
+        aiSystemLogs: [
+            { id: 1, time: "Hace 4 min", type: "success", text: "Segmento 'Súper Fans - La Guitarra' exportado con éxito a PostgreSQL (342 registros)." },
+            { id: 2, time: "Hace 18 min", type: "warning", text: "Alerta de ocupación: Palcos VIP por debajo del umbral óptimo para la función del sábado." },
+            { id: 3, time: "Hace 1 hora", type: "info", text: "Regla lógica inyectada: Flujo automatizado listo para el estreno de 'El Acordeón Secreto'." }
+        ]
+    });
 
-  // Alertas completas sugeridas por la IA (¡De vuelta a su estado original!)
-  const [alerts, setAlerts] = useState([
-    { id: 1, type: "emergency", text: "🚨 Alerta Crítica: Baja venta para este viernes en el Teatro Mori. Quedan 42 butacas vacías (45% de ocupación). Sugerencia: Lanzar campaña de Botón Salvavidas.", time: "Hace 10 min" },
-    { id: 2, type: "fidelization", text: "📈 Oportunidad de Campaña: Detectamos 120 'Súper Fans' que asistieron a la temporada pasada pero aún no compran para esta. Sugerencia: Enviar recordatorio premium.", time: "Hace 2 horas" },
-    { id: 3, type: "success", text: "✅ Campaña Completada: Se despachó el WhatsApp masivo para 'Cruce Retroactivo'. 15 nuevos espectadores adquirieron sus tickets.", time: "Ayer" }
-  ]);
+    // 3. Función de Envío de Mensajes (Definida explícitamente antes del return)
+    const sendMessage = (category, text, sender = "user") => {
+        const newMessage = { id: Date.now(), sender, text };
+        setChats(prev => ({
+            ...prev,
+            [category]: [...prev[category], newMessage]
+        }));
+    };
 
-  // Historial del chat del Copiloto
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      sender: "ia",
-      text: "¡Hola Vicente! Soy Bambalinas IA. Veo que la función de este viernes para 'Shrek, El Musical' tiene solo un 45% de ocupación (42 butacas vacías). ¿Quieres que activemos el Botón Salvavidas para hacer sala?"
-    },
-    {
-      id: 2,
-      sender: "user",
-      text: "Sí, porfa. Filtra a los que compran a última hora y armas una campaña."
-    },
-    {
-      id: 3,
-      sender: "ia",
-      text: "¡Entendido! He activado el escáner en PostgreSQL. Encontré **85 espectadores** clasificados como 'Última Hora / Impulsivos' de la temporada pasada que calzan perfecto. Al lado derecho te dejé la lista detectada y una propuesta de mensaje con sentido de urgencia. ¿Te tinca el texto o le cambiamos algo?"
-    }
-  ]);
-
-  const addMessage = (sender, text) => {
-    setMessages((prev) => [...prev, { id: Date.now(), sender, text }]);
-  };
-
-  return (
-    <BambalinasContext.Provider value={{
-      currentShow, setCurrentShow,
-      metrics, setMetrics,
-      messages, addMessage,
-      alerts, setAlerts
-    }}>
-      {children}
-    </BambalinasContext.Provider>
-  );
+    return (
+        <BambalinasContext.Provider value={{ chats, sendMessage, currentSeason }}>
+            {children}
+        </BambalinasContext.Provider>
+    );
 }
 
-export function useBambalinas() {
-  return useContext(BambalinasContext);
-}
+export const useBambalinas = () => useContext(BambalinasContext);
